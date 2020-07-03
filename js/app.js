@@ -95,15 +95,36 @@ var showProducts = products => {
 
 showProducts(products);
 
+/*
+//No he conseguido que funcione con éxito el habilitar/deshabilitar podrías indicarme cual es el problema¿?¿?¿?¿
 
+var suma = 0;
+var btnCalc = document.getElementById("boton");
+function validateInput(){
+    for( var i=0; i<products.length; i++){  
+        if(products[i].units>0){
+            suma += products[i].units;
+        }else{
+            console.log("NO Hay unidades");
+        } 
+    }
+    if(suma>0){
+        document.getElementById('boton').disabled = false; // Disabled
+    }else{
+        document.getElementById('boton').disabled = true; // Disabled
+    }
+}*/
+
+            
 //Calculamos los subtotales, impuestos y precio final
 function obtenerFactura(){
+    //validateInput();
     var precioIVA = 0;
     var precioSubtotal = 0;
     var precioTotal = 0;
     for(var i=0; i< products.length;i++){ 
-            precioSubtotal +=  products[i].price * products[i].units;
-            precioIVA += (products[i].price * products[i].units) * (products[i].tax/100);
+        precioSubtotal +=  products[i].price * products[i].units;
+        precioIVA += (products[i].price * products[i].units) * (products[i].tax/100);
     }
     precioTotal += precioSubtotal + precioIVA; 
     document.getElementById("subtotal").innerText = precioSubtotal.toFixed(2);
