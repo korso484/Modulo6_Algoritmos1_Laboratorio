@@ -69,73 +69,54 @@ ol.setAttribute("class", "orderL");
 var main = document.getElementById("principal");
 main.appendChild(ol);
 
-function calcularCosteItem(tag, unit){
-    var resultadoItem = tag * unit;
-    return resultadoItem;
-}
 
-
-
-var contadorId = 1;
-for(var product of products){
+//Creamos los productos
+function createProduct(product) {
     var li = document.createElement("li");
-    li.innerHTML = product.description + ("- ") + product.price + ("€/ud.");
-    var input = document.createElement("input");
-    input.setAttribute("class", "product_unit");
-    input.setAttribute("type", "number");
-    input.setAttribute("id", "input_" +contadorId);
-    input.setAttribute("value", 2);
-    input.addEventListener("change", event => product.units = event.target.value);
-    li.appendChild(input);
-    ol.appendChild(li);
-    var resul = calcularCosteItem(product.price, input.value);
-    console.log(resul);
-    contadorId++;
+        li.innerHTML = product.description + (" - ") + product.price + ("€/ud.");
+        var input = document.createElement("input");
+        input.setAttribute("class", "product_unit");
+        input.setAttribute("type", "number");
+        input.setAttribute("id", "input");
+        input.setAttribute("value", product.units);
+        input.addEventListener("change", event => product.units = event.target.valueAsNumber);
+        li.appendChild(input);
+        ol.appendChild(li);       
 }
 
-function isNumber(op){
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*var costeTotal = 0;
-var contador = 0;
-function precioParcial(){
+//Iteramos y mostramos los productos
+var showProducts = products => {
     for(var product of products){
-        var valor = document.getElementById(input.getAttribute("id")).value; 
-        console.log(valor);
-        var costeParcial = calcularCosteItem(product.price, valor);
-        costeTotal = costeParcial + costeTotal;
-        return costeTotal; 
-    }
-    console.log(costeTotal);
-    
-}*/
+        createProduct(product);
+    }  
+}
 
-//document.getElementById("boton").addEventListener("click", precioParcial);
+
+
+showProducts(products);
+
+
+//Calculamos los subtotales, impuestos y precio final
+function obtenerFactura(){
+    var precioIVA = 0;
+    var precioSubtotal = 0;
+    var precioTotal = 0;
+    for(var i=0; i< products.length;i++){ 
+            precioSubtotal +=  products[i].price * products[i].units;
+            precioIVA += (products[i].price * products[i].units) * (products[i].tax/100);
+    }
+    precioTotal += precioSubtotal + precioIVA; 
+    document.getElementById("subtotal").innerText = precioSubtotal.toFixed(2);
+    document.getElementById("IVA").innerText = precioIVA.toFixed(2); 
+    document.getElementById("TOTAL").innerText = precioTotal.toFixed(2);      
+}
+
+
+//Asociamos el evento al botón Calcular
+document.getElementById("boton").addEventListener("click", obtenerFactura);
+
+
+
+
 
 
